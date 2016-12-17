@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Weather</string>
+    <string name="action_settings">Settings</string>
+    <string name="fail_get_location">Fail to get current location, please turn on your gps</string>
+    <string name="fail_get_weather">Fail to get current weather, please check your connection</string>
+    <string name="location_permission">This app requires a location permission to determine your current location weather</string>
+    <string name="celcius">%1$s\u00B0C</string>
+    <string name="loading">Loading</string>
+    <string name="get_current_location">Getting current location</string>
+    <string name="location_already_exists">Fail to add new location, location already exists</string>
+</resources>
