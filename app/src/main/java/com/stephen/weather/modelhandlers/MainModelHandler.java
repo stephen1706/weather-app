@@ -60,7 +60,7 @@ public class MainModelHandler extends BaseModelHandler {
             user.setLongitude(longitude);
             mRealm.commitTransaction();
             return true;
-        } catch (RealmPrimaryKey    ConstraintException e) {
+        } catch (RealmPrimaryKeyConstraintException e) {
             mRealm.cancelTransaction();
             return false;
         }
