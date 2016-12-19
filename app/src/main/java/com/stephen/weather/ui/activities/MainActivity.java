@@ -6,6 +6,8 @@ import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -47,6 +49,7 @@ public class MainActivity extends RxAppCompatActivity implements EasyPermissions
     private static final int GET_LOCATION_REQUEST_CODE = 1;
     private static final int ADD_WEATHER_REQUEST_CODE = 2;
     private static final String TAG = MainActivity.class.getSimpleName();
+    private static final long GPS_TIMEOUT = 10000;
 
     private MainModelHandler mModelHandler;
     private LocationUtil mLocationUtil;
@@ -56,12 +59,28 @@ public class MainActivity extends RxAppCompatActivity implements EasyPermissions
     private GoogleApiClient mGoogleApiClient;
     private PlaceAutocompleteAdapter mGooglePlaceAdapter;
 
+    private Runnable gpsTimeout = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                Log.d(TAG, "GPS Timeout");
+                mLocationUtil.disconnect();
+            } catch (SecurityException e) {
+                Log.e(TAG, e.getMessage());
+            } finally {
+                getWeatherData(null);
+            }
+        }
+    };
+    private Handler handler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        handler = new Handler(Looper.getMainLooper());
         mModelHandler = new MainModelHandler(this);
         mLocationUtil = new LocationUtil(this);
 
@@ -104,6 +123,8 @@ public class MainActivity extends RxAppCompatActivity implements EasyPermissions
             mGoogleApiClient.disconnect();
         }
         mLocationUtil.disconnect();
+        handler.removeCallbacks(gpsTimeout);
+
         super.onStop();
     }
 
@@ -199,15 +220,18 @@ public class MainActivity extends RxAppCompatActivity implements EasyPermissions
                 mLocationUtil.disconnect();
 
                 mLocation = location;
+                handler.removeCallbacks(gpsTimeout);
                 getWeatherData(location);
             });
             mLocationUtil.connect();
+            handler.postDelayed(gpsTimeout, GPS_TIMEOUT);
         }
     }
 
     private void getWeatherData(Location location) {
         if (location == null) {
             Toast.makeText(this, R.string.fail_get_location, Toast.LENGTH_SHORT).show();
+            binding.swipeLayout.setRefreshing(false);
             return;
         }
 

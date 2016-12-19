@@ -8,6 +8,7 @@ import com.stephen.weather.BuildConfig;
 import com.stephen.weather.Constants;
 import com.stephen.weather.WeatherDataBridge;
 import com.stephen.weather.realm.WeatherLocation;
+import com.stephen.weather.util.RetryWithDelay;
 import com.stephen.weather.viewmodels.CurrentWeatherViewModel;
 import com.stephen.weather.viewmodels.LocationViewModel;
 import com.stephen.weather.viewmodels.WeatherListViewModel;
@@ -30,6 +31,7 @@ public class MainModelHandler extends BaseModelHandler {
     public Observable<CurrentWeatherViewModel> getWeather(double latitude, double longitude, String locationName){
         return mApiService.getWeather(latitude, longitude, BuildConfig.WEATHER_API_KEY, Constants.CELCIUS)
                 .subscribeOn(Schedulers.io())
+                .retryWhen(new RetryWithDelay(3, 1000))
                 .doOnNext(currentWeatherDataModel -> {//update cache
                     Realm realm = Realm.getDefaultInstance();
                     realm.beginTransaction();
