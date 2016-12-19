@@ -45,7 +45,7 @@ public class WeatherDataBridge {
         viewModel.setCurrentWeather(currentWeatherViewModel);
 
         ArrayList<EachDayForecastViewModel> list = new ArrayList<>();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE, dd MMM");
         for(ForecastDataModel.ListBean bean : forecastDataModel.getList()){
             EachDayForecastViewModel eachDayForecastViewModel = new EachDayForecastViewModel();
             eachDayForecastViewModel.setHigh((int) bean.getTemp().getMax());
