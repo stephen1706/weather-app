@@ -8,4 +8,5 @@
     <string name="loading">Loading</string>
     <string name="get_current_location">Getting current location</string>
     <string name="location_already_exists">Fail to add new location, location already exists</string>
+    <string name="require_current_location">This app requires your current location</string>
 </resources>

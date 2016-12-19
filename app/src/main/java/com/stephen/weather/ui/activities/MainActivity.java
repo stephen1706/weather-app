@@ -263,7 +263,7 @@ public class MainActivity extends RxAppCompatActivity implements EasyPermissions
 
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
-
+        Toast.makeText(this, R.string.require_current_location, Toast.LENGTH_SHORT).show();
     }
 
 
