@@ -27,7 +27,7 @@ public class WeatherApplication extends Application {
         ApiProvider.setUp();
     }
 
-    public Realm getRealm() {
+    public synchronized Realm getRealm() {
         if (realm == null) {
             RealmConfiguration config = new RealmConfiguration.Builder()
                     .name(Constants.REALM_DATABASE_NAME)
