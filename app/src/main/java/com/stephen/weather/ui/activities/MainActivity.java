@@ -47,7 +47,6 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class MainActivity extends RxAppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
     private static final int GET_LOCATION_REQUEST_CODE = 1;
-    private static final int ADD_WEATHER_REQUEST_CODE = 2;
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final long GPS_TIMEOUT = 10000;
 
