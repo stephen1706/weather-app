@@ -12,7 +12,6 @@ import io.realm.RealmConfiguration;
  */
 
 public class WeatherApplication extends Application {
-    private ApiProvider mApiProvider;
     private Realm realm;
 
     @Override
